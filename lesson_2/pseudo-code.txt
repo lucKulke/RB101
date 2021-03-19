@@ -1,0 +1,29 @@
+1. a method that returns the sum of two integers
+2. a method that takes an array of strings, and returns a string that is all those strings concatenated together
+3. a method that takes an array of integers, and returns a new array with every other element
+
+# 1.
+  
+START
+
+method sum of two integers with parameter(number1 and number2)
+  return number1 + number2
+method end
+
+END
+
+# 2.
+
+START
+  SET array of strings
+  
+
+method strings_concatenate(array of strings) 
+  SET concat_string 
+  iterate over array of strings and save each variable in string
+  return concat_string += string
+method end
+
+END
+
+

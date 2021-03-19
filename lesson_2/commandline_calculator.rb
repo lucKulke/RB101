@@ -1,4 +1,21 @@
-# funktions (add,subtract,multiply,divide)
+# is the number valid? is the operator valid?
+
+def valid_number?(number)
+  number.to_i != 0
+end
+
+def valid_operator?(operator)
+  valid_number?(operator) && operator.to_i.between?(1,4)
+end
+
+
+# funktion for display text and results
+
+def promt(message)
+  Kernel.puts("> #{message}")
+end
+
+# math functions (add,subtract,multiply,divide)
 
 def add(num1, num2)
   return num1 + num2
@@ -24,33 +41,75 @@ end
 
 quit = false
 
-while quit == false
-  puts "the calculator is ready"
-  puts "enter first number"
-  user_input_first_number = Kernel.gets().chomp().to_i
-  puts "enter second number"
-  user_input_second_number = Kernel.gets().chomp().to_i
-  puts "which operation should the calculator perform?(add, sub, multiply, divide)"
-  user_input_operation = Kernel.gets.chomp
+while quit == false #loop for quit the calculator
+  user_input_first_number = ""
+  user_input_second_number = ""
+  user_input_operation = ""
+  pormt_operator = <<-MSG
+What operation would you like to perform?
+   
+   1) add
+   2) subtract
+   3) multiply
+   4) divide
 
-  if user_input_operation == "add"
-    Kernel.puts(">> #{add(user_input_first_number, user_input_second_number)}")
-  elsif user_input_operation == "sub"
-    Kernel.puts(">> #{sub(user_input_first_number, user_input_second_number)}")
-  elsif user_input_operation == "multiply"
-    Kernel.puts(">> #{multiply(user_input_first_number, user_input_second_number)}")
-  elsif user_input_operation == "divide"
-    Kernel.puts(">> #{divide(user_input_first_number, user_input_second_number)}")
-  else Kernel.puts("your operation dont exist")   
+  MSG
+  
+  promt("calculator is ready.")
+  
+  loop do
+    promt("enter first number...")
+    user_input_first_number = Kernel.gets().chomp().to_i
+    if valid_number?(user_input_first_number)
+      break
+    else
+      promt("thats not a valid number..please enter another number.")
+    end
   end
 
-  Kernel.puts("do you want to calculate something else?(y/n)")
-  user_input_loop = Kernel.gets().chomp().downcase
-  if user_input_loop == "y"
-    Kernel.puts("ok")
-  elsif user_input_loop == "n"
-   return quit = true
-  else 
-    Kernel.puts("your input is not valid. type 'y' for yes and 'n' for no.")
+  loop do
+    promt("enter second number")
+    user_input_second_number = Kernel.gets().chomp().to_i
+    if valid_number?(user_input_second_number)
+      break
+    else
+      promt("thats not a valid number..please enter another number.")
+    end
+  end
+
+  loop do
+    promt(pormt_operator)
+    user_input_operation = Kernel.gets.chomp
+    if valid_operator?(user_input_operation)
+      break
+    else
+      promt("thats not a valid operator. enter a new operator.")
+    end
+  end
+  
+  case user_input_operation
+  when "1"
+    promt(">> #{add(user_input_first_number, user_input_second_number)}")
+  when "2"
+    promt(">> #{sub(user_input_first_number, user_input_second_number)}")
+  when "3"
+    promt(">> #{multiply(user_input_first_number, user_input_second_number)}")
+  when "4"
+    promt(">> #{divide(user_input_first_number.to_f, user_input_second_number.to_f)}")
+  else promt("your operation dont exist")
+  end
+
+  # loop for question if the user calculate again or quit.
+  loop do
+    promt("do you want to calculate something else?(y/n)")
+    user_input_loop = Kernel.gets().chomp().downcase
+    if user_input_loop == "y"
+      promt("ok")
+      break
+    elsif user_input_loop == "n"
+      return quit = true
+    else
+      promt("your input is not valid. type 'y' yes and 'n' no.")
+    end
   end
 end
