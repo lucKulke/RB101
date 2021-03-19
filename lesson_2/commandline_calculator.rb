@@ -5,9 +5,8 @@ def valid_number?(number)
 end
 
 def valid_operator?(operator)
-  valid_number?(operator) && operator.to_i.between?(1,4)
+  valid_number?(operator) && operator.to_i.between?(1, 4)
 end
-
 
 # funktion for display text and results
 
@@ -25,7 +24,7 @@ def selected_operation_string(operator)
       "muliplying"
     when "4"
       "divideing"
-    end
+  end
 
 end
 
