@@ -15,6 +15,20 @@ def promt(message)
   Kernel.puts("> #{message}")
 end
 
+def selected_operation_string(operator)
+  case operator
+    when "1"
+      "adding"
+    when "2"
+      "subtracting"
+    when "3"
+      "muliplying"
+    when "4"
+      "divideing"
+    end
+
+end
+
 # math functions (add,subtract,multiply,divide)
 
 def add(num1, num2)
@@ -31,7 +45,7 @@ end
 
 def divide(num1, num2)
   if num1 > 0 && num2 > 0
-    result = num1 / num2
+    num1 / num2
   else
     puts "you can't divide by zero"
   end
@@ -86,6 +100,8 @@ What operation would you like to perform?
       promt("thats not a valid operator. enter a new operator.")
     end
   end
+
+  promt("#{selected_operation_string(user_input_operation)} the two numbers..")
   
   case user_input_operation
   when "1"
