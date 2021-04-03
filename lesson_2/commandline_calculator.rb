@@ -1,5 +1,5 @@
 require 'yaml'
-MESSAGES = YAML.load_file('./message_calulator.yml')
+MESSAGES = YAML.load_file('message_calculator.yml')
 
 # is the number valid? is the operator valid?
 
@@ -49,7 +49,7 @@ def divide(num1, num2)
   if num1 > 0 && num2 > 0
     num1 / num2
   else
-    puts "you can't divide by zero"
+    promt(MESSAGES['zero'])
   end
 end
 
@@ -74,22 +74,22 @@ What operation would you like to perform?
   promt(MESSAGES['welcome'])
   
   loop do
-    promt("enter first number...")
+    promt(MESSAGES['first_number'])
     user_input_first_number = Kernel.gets().chomp().to_i
     if valid_number?(user_input_first_number)
       break
     else
-      promt("thats not a valid number..please enter another number.")
+      promt(MESSAGES['valid_number'])
     end
   end
 
   loop do
-    promt("enter second number")
+    promt(MESSAGES['second_number'])
     user_input_second_number = Kernel.gets().chomp().to_i
     if valid_number?(user_input_second_number)
       break
     else
-      promt("thats not a valid number..please enter another number.")
+      promt(MESSAGES['valid_number'])
     end
   end
 
@@ -99,7 +99,7 @@ What operation would you like to perform?
     if valid_operator?(user_input_operation)
       break
     else
-      promt("thats not a valid operator. enter a new operator.")
+      promt(MESSAGES['valid_operator'])
     end
   end
 
@@ -114,12 +114,12 @@ What operation would you like to perform?
     promt(">> #{multiply(user_input_first_number, user_input_second_number)}")
   when "4"
     promt(">> #{divide(user_input_first_number.to_f, user_input_second_number.to_f)}")
-  else promt("your operation dont exist")
+  else promt(MESSAGES['operation_wrong'])
   end
 
   # loop for question if the user calculate again or quit.
   loop do
-    promt("do you want to calculate something else?(y/n)")
+    promt(MESSAGES['new_calculation'])
     user_input_loop = Kernel.gets().chomp().downcase
     if user_input_loop == "y"
       promt("ok")
@@ -127,7 +127,7 @@ What operation would you like to perform?
     elsif user_input_loop == "n"
       return quit = true
     else
-      promt("your input is not valid. type 'y' yes and 'n' no.")
+      promt(MESSAGES["new_calculation_error"])
     end
   end
 end
