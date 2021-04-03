@@ -1,3 +1,6 @@
+require 'yaml'
+MESSAGES = YAML.load_file('./message_calulator.yml')
+
 # is the number valid? is the operator valid?
 
 def valid_number?(number)
@@ -68,7 +71,7 @@ What operation would you like to perform?
 
   MSG
   
-  promt("calculator is ready.")
+  promt(MESSAGES['welcome'])
   
   loop do
     promt("enter first number...")
