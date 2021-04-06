@@ -50,5 +50,5 @@ def mortage_loan(loan_amount, annua_percentage_rate, loan_duration)
   return monthly_paymaent = loan_amount * (monthly_interest_rate / (1-(1+monthly_interest_rate)**(-loan_duration)))
 end
 
-puts "your monthly payment is: #{mortage_loan(loan_amount_input,annua_percentage_rate_input,loan_duration_input)}"
+puts "your monthly payment is:#{mortage_loan(loan_amount_input,annua_percentage_rate_input,loan_duration_input)}"
 
