@@ -1,6 +1,8 @@
 name = 'johnson'
 
-['kim', 'joe', 'sam'].each do |fname|
-  p name = fname
+def print(string)
+  puts string
+  puts name
 end
-p name
+
+print("hello")
