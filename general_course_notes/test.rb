@@ -1,8 +1,8 @@
-name = 'johnson'
-
-def print(string)
-  puts string
-  puts name
+def extend_greeting(greeting)
+  greeting + " there"
 end
 
-print("hello")
+greeting = "hi"
+puts extend_greeting(greeting)
+
+puts greeting
