@@ -1,11 +1,11 @@
 ### Question 1
 What would you expect the code below to print out?
-=begin
+```ruby
 numbers = [1, 2, 2, 3]
 numbers.uniq
 
 puts numbers
-=end
+```
 
 solution: the code prints 1 2 2 3 . because uniq() creates
 a new array with the uniq values inside and dont midify numbers. Also puts() automaticly calls to_s() method on the given value in contrast to p(). p() calls the inspect() method automaticly on the give value.
@@ -32,25 +32,25 @@ solution:
 ### Question 3
 Replace the word "important" with "urgent" in this string:
 
-=begin
+```ruby
 advice = "Few things in life are as important as house training your pet dinosaur."
-=end
+```
 
 my solution: 
-=begin
+```ruby
 
 advice = "Few things in life are as important as house training your pet dinosaur."
 advice =advice.split
 advice.map! {|word| word == "important" ? "urgent" : word }
 advice = advice.join(" ")
 
-=end
+```
 
 launchshool solution: 
 
-=begin
+```ruby
 advice.gsub!('important', 'urgent')
-=end
+```
 
 
 ### Question 4
@@ -59,12 +59,12 @@ Two of them have very similar names. Let's see how they differ:
 
 What do the following method calls do (assume we reset numbers to the original array between method calls)?
 
-=begin 
+```ruby 
 numbers = [1, 2, 3, 4, 5]
 
 numbers.delete_at(1)
 numbers.delete(1)
-=begin
+```
 
 1. delete_at(1) means that the method deletes at index [1] the value in the array
 2. delete(1) means that the method deletes the value 1 in the array
@@ -78,29 +78,32 @@ launchshool solution: (10..100).cover?(42)
 
 ### Question 6
 show two different ways to put the expected "Four score and " in front of it.
-
+```ruby
 famous_words = "seven years ago..."
 
-solution:
+# solution:
 1. "Four score and " + famous_words
 
 2.  famous_words.prepend("Four score and ")
 
-
+```
 ### Question 7
 Make this into an un-nested array.
-
+```ruby
 flintstone = ["Fred", "Wilma", ["Barney", "Betty"], ["BamBam", "Pebbles"]]
 
-solution:
+#solution:
 flintstone.flatten!
-
+```
 ### Question 8
 Given the hash below:#
-
+```ruby
 flintstones = { "Fred" => 0, "Wilma" => 1, "Barney" => 2, "Betty" => 3, "BamBam" => 4, "Pebbles" => 5 }
-
+```
 Turn this into an array containing only two elements: Barney's name and Barney's number.
-
-my solution: flintstones = flintstones.to_a.delete_at(2)
-launchschool solution: flintstones.assoc("Barney")
+```ruby
+# my solution: 
+flintstones = flintstones.to_a.delete_at(2)
+# launchschool solution:
+ flintstones.assoc("Barney")
+```
