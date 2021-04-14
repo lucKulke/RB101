@@ -1,8 +1,4 @@
-def extend_greeting(greeting)
-  greeting + " there"
-end
+title = "Flintstone Family Members"
 
-greeting = "hi"
-puts extend_greeting(greeting)
 
-puts greeting
+p title.center(40)
