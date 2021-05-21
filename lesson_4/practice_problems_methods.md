@@ -155,7 +155,49 @@ Copy Code
 flintstones = %w(Fred Barney Wilma Betty BamBam Pebbles)
 ```
 
+solution:
+```ruby
+flintstones.map! do |v|
+  v[0,3]
+end
+```
+
+
+### Practice Problem 7
+Create a hash that expresses the frequency with which each letter occurs in this string:
+
+Copy Code
+```ruby
+statement = "The Flintstones Rock"
+#ex:
+
+#Copy Code
+{ "F"=>1, "R"=>1, "T"=>1, "c"=>1, "e"=>2, ... }
+```
+
+
+solution:
+```ruby
+munsters = {
+  "Herman" => { "age" => 32, "gender" => "male" },
+  "Lily" => { "age" => 30, "gender" => "female" },
+  "Grandpa" => { "age" => 402, "gender" => "male" },
+  "Eddie" => { "age" => 10, "gender" => "male" },
+  "Marilyn" => { "age" => 23, "gender" => "female"}
+}
 
 
 
+munsters.each do |k,v|
+	if v["age"] < 17
+		munsters[k]["age_groupe"] = "kid"
+	elsif v["age"] >= 18 && v["age"] <= 64
+		munsters[k]["age_groupe"] = "adult"
+	else
+		munsters[k]["age_groupe"] = "senior"
+	end
+		
+end
 
+p munsters
+```
