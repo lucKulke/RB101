@@ -1,3 +1,6 @@
+
+# METHODS
+
 def display_board(brd)
 	
 	puts "      BOARD"
@@ -17,11 +20,20 @@ def display_board(brd)
 	puts "     |     |     "
 end
 
-def initilize_board()
+def initilize_board
 	new_board = {}
 	(1..9).each {|num| new_board[num]= " "}
 	new_board
 end
+
+
+def computer_ki(board)
+	marked_spuare = 0
+	
+	board[]	
+
+end
+
 
 
 def game_controler_winner(board)
@@ -43,34 +55,87 @@ def game_controler_winner(board)
 
 	end
 	return return_var
-
 end
+
 
 def game_controler_boardfull(board)
-	puts "boad full"
-	board.keys.all? { |e| e != " " }
+	if board.values.all? { |e| e != " " }
+		return true
+	else
+		return false
+	end
 end
 
-#main
+
+def winner_congrat(winner)
+	if winner == "computer"
+		puts " ----------------------"
+		puts "Computer won the game.."
+		puts "-----------------------"
+		puts " "
+
+	elsif winner == "player"
+		puts "---------------------"
+		puts "You are the winner!!!"
+		puts "---------------------"
+		puts " "
+	end
+end
+
+
+def tie_boardfull
+	puts "----------"
+	puts "Its a Tie!"
+	puts "----------"
+	puts " "
+end
+
+def computer_mark
+	puts " "
+	puts "computer marks a square.."
+	puts " "
+	puts "___________________________________________"
+	puts "___________________________________________"
+	puts " "
+end
+
+# MAIN
+
+
+replay = true
 
 # game loop
-board = initilize_board
-
 loop do 
-	replay = true
+
 	break if replay == false
-	winner_player = false
-	winner_computer = false
-	board_full = false
 
+	board = initilize_board # creats a empty board
 	
-	loop do 
-		display_board(board)
+	winner_player = false
+	
+	winner_computer = false
+	
+	board_full = false
+	
+	computer_input = 0
 
-		# player marks square
-		puts "please mark square"
-		valid_player_input = false
+	startpoint = false
+
+	# Round loop
+	loop do 
 		
+
+		display_board(board)
+		
+		break if winner_player == true || winner_computer == true || board_full == true
+
+		
+		# player marks square
+		#------------------------------------------------------------------------
+		puts "please mark square.."
+		
+		# valid_player_input loop 
+		valid_player_input = false
 		loop do 
 
 			user_input = gets.chomp.to_i
@@ -87,32 +152,72 @@ loop do
 
 			break if valid_player_input == true	
 		end
+		
+		#------------------------------------------------------------------------
 
+		
+		if game_controler_winner(board) == "player" # chek if player won the game and if thats the case round break condition set to true
+			winner_player = true
+		end
+		
 
+		board_full = game_controler_boardfull(board) # chek if board allready full
 
 		
 		# computer marks square
-		puts "computer marks square"
-		computer_input = 3
+		#------------------------------------------------------------------------
+		computer_mark
+		
+		# computer ki starts after startpoint is set
+		if startpoint == true
+		  computer_input = computer_ki(board)
+		end
+
+		#set start point
+		loop do 
+			break if startpoint == true
+			loop do 
+				break if board[computer_input] == " "
+			  computer_input = rand(1..9)
+			  startpoint = true
+			end
+		end
+
 		board.each{|k,v| board[k] = "O" if (computer_input == k && v == " ")}
 
 
-		# winner_player = true if 
-		if game_controler_winner(board) == "player"
-			winner_player = true
-		elsif game_controler_winner(board) == "computer"
+		
+		if board_full == false # when board already full computer dont try to mark
+			loop do 
+				computer_input = rand(1..9) 
+				break if board[computer_input] == " " 
+			end
+		end
+		 
+		#-------------------------------------------------------------------------
+
+		
+		# check if computer won the game and if thats the case round break conditon is set to true and winner congrats is displayed
+		if game_controler_winner(board) == "computer"
+			winner_congrat("computer")
 			winner_computer = true
+		elsif winner_player == true
+			winner_congrat("player")
+		end
+		
+		# Board check if it is full(Tie)
+		board_full = game_controler_boardfull(board)
+		if board_full == true
+			tie_boardfull
 		end
 
-
-		board_full = game_controler_boardfull(board)
-
-		p board
-
-		break if winner_player == true 
 	end
 
-	
+	# gameloop replay question
+	puts "replay? (y/n)"
+	user_input_replay = gets.chomp.downcase
+	replay = false if user_input_replay == "n"
+		
 
 end
 
