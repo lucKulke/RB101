@@ -1,4 +1,4 @@
-# .rubocop.yml for RB101 Lessons 6 (17 Mar 2021)
+# .rubocop.yml for RB101 Lessons 2-5 (05 Oct 2020)
 
 AllCops:
   # Display cop names
@@ -11,7 +11,7 @@ AllCops:
   DisplayStyleGuide: true
   # When specifying style guide URLs, any paths and/or fragments will be
   # evaluated relative to the base URL.
-  StyleGuideBaseURL: https://rubystyle.guide/
+  StyleGuideBaseURL: https://github.com/bbatsov/ruby-style-guide
   # What version of the Ruby interpreter is the inspected code intended to
   # run on? (If there is more than one, set this to the lowest version.)
   TargetRubyVersion: 2.4
@@ -85,7 +85,7 @@ Style/InlineComment:
 
 Style/MethodCallWithoutArgsParentheses:
   Description: Do not use parentheses for method calls with no arguments.
-  Enabled: true
+  Enabled: false
 
 Style/ModuleFunction:
   Description: Checks for usage of `extend self` in modules.
@@ -136,18 +136,7 @@ Style/ParenthesesAroundCondition:
 
 Style/PercentLiteralDelimiters:
   Description: 'Use `%`-literal delimiters consistently'
-  Enabled: true
-  PreferredDelimiters:
-    '%':  ()
-    '%i': ()
-    '%I': ()
-    '%q': ()
-    '%Q': ()
-    '%r': ()
-    '%s': ()
-    '%w': ()
-    '%W': ()
-    '%x': ()
+  Enabled: false
 
 Style/PerlBackrefs:
   Description: Avoid Perl-style regex back references.
@@ -230,7 +219,7 @@ Layout/LineLength:
   Description: Limit lines to 80 characters.
   Enabled: true
   Max: 80
-  StyleGuide: https://rubystyle.guide/#80-character-limits
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#80-character-limits
   AllowURI: true
   URISchemes:
   - http
@@ -295,6 +284,10 @@ Style/SlicingWithRange:
   Description: 'Checks that arrays are sliced with endless ranges instead of ary[start..-1]'
   Enabled: false
 
+Style/FormatStringToken:
+  Description: 'Use a consistent style for named format string tokens.'
+  Enabled: false
+
 Layout/EmptyLineAfterGuardClause:
   Description: 'Requires empty line after guard clause'
   Enabled: false
@@ -309,11 +302,11 @@ Naming/MethodParameterName:
 
 Style/ConditionalAssignment:
   Description: 'Use return value of conditional for assignment'
-  Enabled: true
+  Enabled: false
 
 Naming/AccessorMethodName:
   Description: 'Do not prefix reader method names with get_'
-  Enabled: true
+  Enabled: false
 
 Style/NegatedUnless:
   Description: 'Favor if over unless'
@@ -333,10 +326,6 @@ Layout/ClosingHeredocIndentation:
 
 Style/CommentedKeyword:
   Description: 'Comments should not be on same line as def'
-  Enabled: false
-
-Style/FormatStringToken:
-  Description: 'Prefer annotated tokens over unannotated'
   Enabled: false
 
 Style/HashEachMethods:
