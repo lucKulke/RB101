@@ -6,7 +6,7 @@ def display_board(brd)
 	puts "************************"
 	puts "*        BOARD         *"
 	puts "*        -----         *"
-	puts "*                      *"
+	puts "*                      *"        
 	puts "*       |     |        *"
 	puts "*    #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}     *"	    
 	puts "*       |     |        *"
