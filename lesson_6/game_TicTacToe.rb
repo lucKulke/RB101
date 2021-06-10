@@ -33,8 +33,57 @@ def initilize_board
 	new_board
 end
 
+def startpoint_computer(board)
+	valid_input = false
+	startpoint = 0
+	loop do 	
+		startpoint = rand(1..9)
+		if board[startpoint] == " "
+			valid_input = true
+		end
+		break if valid_input == true
+	end
+	startpoint
+end
 
 def computer_ki(board)
+# board = {1 => " ", 2 => " ", 3 =>"0"...}
+	return_square = 0
+	winn_array = []
+	winning_arrays = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
+
+	winning_arrays.each{ |subarray| winn_array = subarray if subarray.include?(COMPUTER_START_POINT) }
+	
+	if board[COMPUTER_START_POINT+1] == " "
+		index_winning_array = winn_array.index(COMPUTER_START_POINT)
+		return_square = winn_array[index_winning_array + 1]
+	else 
+		index_winning_array = winn_array.index(COMPUTER_START_POINT)
+		return_square = winn_array[index_winning_array-1]
+	end
+
+	board[return_square] = COMPUTER_MARKER
+	
+end
+	
+
+
+
+
+	#board_array = [[1,2,3], #index 0
+	#							 [4,5,6], #index 1
+	#							 [7,8,9]] #index 2
+
+
+
+
+
+
+
+
+
+
+=begin
 	valid_input = false
 	loop do 	
 		computer_input = rand(1..9)
@@ -44,7 +93,8 @@ def computer_ki(board)
 		end
 		break if valid_input == true
 	end
-end
+=end
+
 
 def player_marks_squer(board, player)
 	
@@ -85,7 +135,7 @@ def game_controler_winner(board)
 			 (board[idx*3+1] == board[(idx + 1)*3+2]) && (board[(idx + 1)*3+2] == board[(idx + 2)*3+3]) && board[idx*3+1] =="X" || # diagonal top left to bottem right
 			 (board[idx*3+3] == board[(idx + 1)*3+2]) && (board[(idx + 1)*3+2] == board[(idx + 2)*3+1]) && board[idx*3+3] =="X" || # diagonal top right to bottem left
 			 (board[(idx +1)+((idx+0)*3)] == board[(idx +1)+((idx+1)*3)]) && (board[(idx +1)+((idx+1)*3)] == board[(idx +1)+((idx+2)*3)]) && (board[(idx +1)+((idx+0)*3)] == "X")  #vertikal
-			return_var = "player"
+			return_var = "player"        
 
 
 		elsif(board[idx*3+3] == board[(idx + 1)*3+2]) && (board[(idx + 1)*3+2] == board[(idx + 2)*3+1]) && board[idx*3+3] =="O" ||
@@ -210,6 +260,8 @@ loop do
 	
 	computer_input = 0
 
+	COMPUTER_START_POINT = startpoint_computer(board)
+	startpoint_set = false
 	
 	gamemodi = choose_gamemodi
 	if gamemodi == "1"
@@ -257,11 +309,15 @@ loop do
 		
 		# opponent marks a square (computer or player 2 depends on what gamemode is selected)
 		#------------------------------------------------------------------------
-		
-		if winner_player_1 == false
+		if startpoint_set == false
+			board[COMPUTER_START_POINT] = COMPUTER_MARKER
+			startpoint_set = true
+		end
+
+		if winner_player_1 == false && startpoint_set == true
 			if agianst_player == false
 				display_computer_mark
-				computer_ki(board)
+			  computer_ki(board)
 			elsif agianst_player == true
 				player_marks_squer(board,"2")
 			end
@@ -282,7 +338,7 @@ loop do
 		elsif game_controler_winner(board) == "computer" && agianst_player == true
 			display_winner_congrat("player_2")
 			winner_opponent = true
-		elsif game_controler_winner(board) == "player"
+		elsif game_controler_winner(board) == "player" && agianst_player == false
 			display_winner_congrat("player")
 			winner_player_1 = true
 		end
