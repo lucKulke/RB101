@@ -8,7 +8,7 @@ def display_board(brd)
 	system "clear"
 	puts "Try to beat the Computer!!!"
 	puts "---------------------------"
-	puts "! *1 million prize money* !"
+	puts ""
 	puts "___________________________"
 	puts ""
 	puts "You're a X. Computer is O."
@@ -80,14 +80,22 @@ def winn_move(brd,profit_opportunities)
 			if brd[5] == EMPTY_SQUARE
 				brd[5] == COMPUTER_MARK
 			else
-				brd[empty_squares(brd).sample] = COMPUTER_MARK
+				loop do 
+					mark = [1,3,7,9].sample
+					brd[mark] = COMPUTER_MARK if brd[mark] == EMPTY_SQUARE
+					break if brd[mark] == COMPUTER_MARK
+				end
 			end
 		end
 	else
 		if brd[5] == EMPTY_SQUARE
 			brd[5] = COMPUTER_MARK
 		else
-			brd[empty_squares(brd).sample] = COMPUTER_MARK
+			loop do 
+					mark = [1,3,7,9].sample
+					brd[mark] = COMPUTER_MARK if brd[mark] == EMPTY_SQUARE
+					break if brd[mark] == COMPUTER_MARK
+				end
 		end
 	end
 end
