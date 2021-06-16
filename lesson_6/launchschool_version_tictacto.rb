@@ -1,14 +1,20 @@
+require "pry"
 PLAYER_MARK = "X"
 COMPUTER_MARK = "O"
 EMPTY_SQUARE = " "
-PROFIT_OPPORTUNITIES_TOTAL = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
+WINNING_LINES = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
 
-def display_board(brd)
-	
+
+def display_board(brd,rounds,points_computer,points_player)
 	system "clear"
+	
 	puts "Try to beat the Computer!!!"
 	puts "---------------------------"
+	puts "Round #{rounds}            "
 	puts ""
+	puts "Player_points | Computer_points "                  
+	puts "--------------------------------"
+	puts "       #{points_player}      |     #{points_computer}"
 	puts "___________________________"
 	puts ""
 	puts "You're a X. Computer is O."
@@ -31,18 +37,72 @@ def display_board(brd)
 	puts "************************"
 end
 
-
-
-
-
 def intialize_board
 	new_board = {}
 	(1..9).each{ |num| new_board[num] = EMPTY_SQUARE }
 	new_board
 end
 
+def set_who_start_first
+	return_var = nil
+	puts "who should start first? (p = player or c = computer)"
+	loop do 
+		user_input = gets.chomp.downcase
+		if user_input.split("").first == "p"
+			return_var = "player"
+		elsif user_input.split("").first == "c"
+			return_var = "computer"
+		else 
+			puts "no valid input.. please try again"
+		end
+		break if return_var
+	end
+	return_var
+end
+
+def empty_squares(brd)
+	empty_squares = []
+	brd.each{ |k,v| empty_squares << k if v == EMPTY_SQUARE}
+	empty_squares
+end
+
 def joinor(arr,symbol = ", ",word = " or ")
+	
 	arr[0,(arr.length - 1)].join(symbol) + word + arr.pop.to_s
+end
+
+def computer_mark_square!(brd)
+	square = nil
+
+	# offense first
+  WINNING_LINES.each do |line|
+    square = find_at_risk_square(line, brd, COMPUTER_MARK)
+    break if square
+  end
+
+  
+  # defence first
+  if !square
+    WINNING_LINES.each do |line|
+      square = find_at_risk_square(line, brd, PLAYER_MARK)
+      break if square
+    end
+  end
+
+  if brd[5] == PLAYER_MARK && empty_squares(brd).size == 8
+  	square = [1,3,7,9].sample
+  end
+  # pick 5 if its empty
+  if !square && brd[5] == EMPTY_SQUARE
+  	brd[5] = COMPUTER_MARK
+  elsif !square && brd[5] != EMPTY_SQUARE# else pick a random square
+    square = [2,4,6,8].sample
+  elsif !square
+  	square = empty_squares(brd).sample
+  end
+  
+
+  brd[square] = COMPUTER_MARK
 end
 
 def player_mark_square!(brd)
@@ -57,90 +117,33 @@ def player_mark_square!(brd)
 	brd[player_input] = PLAYER_MARK
 end
 
-
-
-
-def winn_move(brd,profit_opportunities)
-	square = nil
-
-	profit_opportunities.each do |subarray|
-		if brd[subarray[0]] == COMPUTER_MARK && brd[subarray[1]] == COMPUTER_MARK 
-			square = subarray[2]
-		elsif brd[subarray[0]] == COMPUTER_MARK && brd[subarray[2]] == COMPUTER_MARK
-			square = subarray[1]
-		elsif brd[subarray[1]] == COMPUTER_MARK && brd[subarray[2]] == COMPUTER_MARK
-			square = subarray[0]
-		end
-	end
-
-	if square != nil
-		if brd[square] == EMPTY_SQUARE
-			brd[square] = COMPUTER_MARK 
-		else
-			if brd[5] == EMPTY_SQUARE
-				brd[5] == COMPUTER_MARK
-			else
-				loop do 
-					mark = [1,3,7,9].sample
-					brd[mark] = COMPUTER_MARK if brd[mark] == EMPTY_SQUARE
-					break if brd[mark] == COMPUTER_MARK
-				end
-			end
-		end
-	else
-		if brd[5] == EMPTY_SQUARE
-			brd[5] = COMPUTER_MARK
-		else
-			loop do 
-					mark = [1,3,7,9].sample
-					brd[mark] = COMPUTER_MARK if brd[mark] == EMPTY_SQUARE
-					break if brd[mark] == COMPUTER_MARK
-				end
-		end
+def place_piece!(board,current_player)
+	if current_player == "player"
+		player_mark_square!(board)
+	elsif current_player == "computer"
+		computer_mark_square!(board)
 	end
 end
 
-
-def computer_mark_square!(brd,profit_opportunities)
-	square = nil
-
-	profit_opportunities.each_with_index do |subarray,index|
-		if brd[subarray[0]] == PLAYER_MARK && brd[subarray[1]] == PLAYER_MARK 
-			square = subarray[2]
-			profit_opportunities.delete_at(index)
-			break
-		elsif brd[subarray[0]] == PLAYER_MARK && brd[subarray[2]] == PLAYER_MARK
-			square = subarray[1]
-			profit_opportunities.delete_at(index)
-			break
-		elsif brd[subarray[1]] == PLAYER_MARK && brd[subarray[2]] == PLAYER_MARK
-			square = subarray[0]
-			profit_opportunities.delete_at(index)
-			break	
-		end
+def alternate_player(current_player)
+	if current_player == "computer"
+		return "player"
+	elsif current_player == "player"
+		return "computer"
 	end
-
-
-	if square != nil
-		if brd[square] == EMPTY_SQUARE
-			brd[square] = COMPUTER_MARK 
-		else
-			winn_move(brd,profit_opportunities)
-		end
-	else
-		winn_move(brd,profit_opportunities)
-	end
-
 end
 
-
-def some_one_won?(board)
-	!!detect_winner(board)
+def find_at_risk_square(line, board, marker)
+  if board.values_at(*line).count(marker) == 2
+    board.select{|k,v| line.include?(k) && v == EMPTY_SQUARE}.keys.first
+  else
+    nil
+  end
 end
 
 def detect_winner(board)
 
-	PROFIT_OPPORTUNITIES_TOTAL.each do |subarray|
+	WINNING_LINES.each do |subarray|
 		if board[subarray[0]] == PLAYER_MARK && board[subarray[1]] == PLAYER_MARK && board[subarray[2]] == PLAYER_MARK
 			return "Player"
 		elsif board[subarray[0]] == COMPUTER_MARK && board[subarray[1]] == COMPUTER_MARK && board[subarray[2]] == COMPUTER_MARK
@@ -150,62 +153,112 @@ def detect_winner(board)
 	nil
 end
 
-
+def some_one_won?(board)
+	
+	!!detect_winner(board)
+end
 
 def board_full?(board)
+	
 	empty_squares(board).empty?
 end
 
-
-
-def empty_squares(brd)
-	empty_squares = []
-	brd.each{ |k,v| empty_squares << k if v == EMPTY_SQUARE}
-	empty_squares
-end
-
-
 def replay?
-	puts "replay?"
 	replay = gets.chomp.downcase
 	if replay == "y"
 		true
-	elsif 
+	else 
 		false
 	end
 end
 
-
-# main code
-
-loop do
-
-	profit_opportunities = PROFIT_OPPORTUNITIES_TOTAL.dup
-
-	board = intialize_board
-
-	display_board(board)
-
-	loop do 
-		player_mark_square!(board)
-		display_board(board)
-		break if some_one_won?(board) || board_full?(board)
-		computer_mark_square!(board,profit_opportunities)
-		display_board(board)
-		break if some_one_won?(board) || board_full?(board)
+def display_who_won_round(board)
+	if detect_winner(board) == nil
+		puts "Its a Tie"
+	else
+		puts "#{detect_winner(board)} won this round!"
+		puts "next round..."
 	end
+	sleep(2)
+end
 
-	if some_one_won?(board)
-		puts "#{detect_winner(board)} won the game!"
+def display_congrat_message(points_player,points_computer)
+	if points_computer < points_player
+		puts "Player won with #{points_player} points the game!"
+		puts "-------------------------------------"
+	elsif points_computer > points_player
+		puts "Computer won with #{points_computer} points the game!"
 		puts "-------------------------------------"
 	else
 		puts "its a Tie"
 	end
+end
 
-	puts "Play again? (y or n)"
-	answere = gets.chomp.downcase
 
-	break if answere.start_with?("n")
+
+
+
+
+# main code
+
+loop do # game loop
+	
+	rounds = 0
+	points_computer = 0
+	points_player = 0
+
+	board = intialize_board # build the board
+
+	display_board(board,rounds,points_computer,points_player) # display the board
+
+	beginner = set_who_start_first # ask user who should start
+
+
+	puts "you play 5 rounds, the winner is who have the most points" 
+	
+	loop do #game loop (5 rounds to win)
+		
+		
+		board = intialize_board #reset the board after each round
+		
+		display_board(board,rounds,points_computer,points_player) 
+		
+		current_player = beginner.dup # reset current_player to the beginnig user selection
+		
+		loop do # round loop break if some one won or board is full
+
+			display_board(board,rounds,points_computer,points_player) 
+  		place_piece!(board, current_player) # depending on who starts the method calls either player_mark_square or computer_mark_square!
+  		current_player = alternate_player(current_player) # swaps the currentplayer so that the opponent marks the next square
+  		break if some_one_won?(board) || board_full?(board)  
+
+		end
+		
+		display_board(board,rounds,points_computer,points_player) 
+
+		display_who_won_round(board)
+
+		break if rounds == 5
+		
+		if detect_winner(board) == "Player"	# set points after each round
+			points_player +=1
+		elsif detect_winner(board) == "Computer"
+			points_computer +=1
+		end
+
+		rounds += 1
+
+	end
+
+	display_board(board,rounds,points_computer,points_player)
+	
+	display_congrat_message(points_player,points_computer) # display congrat massage addressed to player or computer
+	
+
+	puts "replay? (y/n)" # set the game break conditon to true or false
+	replay = replay?
+
+	break if !replay
 end
 
 puts "Thanks for playing Tic Tac Toe!"
