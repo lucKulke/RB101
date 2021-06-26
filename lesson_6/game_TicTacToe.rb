@@ -362,7 +362,79 @@ loop do
 	user_input_replay = gets.chomp.downcase
 	replay = false if user_input_replay == "n"
 		
+=begin 
+"own computer ki"
+def computer_mark_square!(brd,profit_opportunities)
+	square = nil
+
+	profit_opportunities.each_with_index do |subarray,index|
+		if brd[subarray[0]] == PLAYER_MARK && brd[subarray[1]] == PLAYER_MARK 
+			square = subarray[2]
+			profit_opportunities.delete_at(index)
+			break
+		elsif brd[subarray[0]] == PLAYER_MARK && brd[subarray[2]] == PLAYER_MARK
+			square = subarray[1]
+			profit_opportunities.delete_at(index)
+			break
+		elsif brd[subarray[1]] == PLAYER_MARK && brd[subarray[2]] == PLAYER_MARK
+			square = subarray[0]
+			profit_opportunities.delete_at(index)
+			break	
+		end
+	end
+
+
+	if square != nil
+		if brd[square] == EMPTY_SQUARE
+			brd[square] = COMPUTER_MARK 
+		else
+			winn_move(brd,profit_opportunities)
+		end
+	else
+		winn_move(brd,profit_opportunities)
+	end
 
 end
 
 
+----
+square = nil
+
+	profit_opportunities.each do |subarray|
+		if brd[subarray[0]] == COMPUTER_MARK && brd[subarray[1]] == COMPUTER_MARK 
+			square = subarray[2]
+		elsif brd[subarray[0]] == COMPUTER_MARK && brd[subarray[2]] == COMPUTER_MARK
+			square = subarray[1]
+		elsif brd[subarray[1]] == COMPUTER_MARK && brd[subarray[2]] == COMPUTER_MARK
+			square = subarray[0]
+		end
+	end
+
+	if square != nil
+		if brd[square] == EMPTY_SQUARE
+			brd[square] = COMPUTER_MARK 
+		else
+			if brd[5] == EMPTY_SQUARE
+				brd[5] == COMPUTER_MARK
+			else
+				loop do 
+					mark = [1,3,7,9].sample
+					brd[mark] = COMPUTER_MARK if brd[mark] == EMPTY_SQUARE
+					break if brd[mark] == COMPUTER_MARK
+				end
+			end
+		end
+	else
+		if brd[5] == EMPTY_SQUARE
+			brd[5] = COMPUTER_MARK
+		else
+			loop do 
+					mark = [1,3,7,9].sample
+					brd[mark] = COMPUTER_MARK if brd[mark] == EMPTY_SQUARE
+					break if brd[mark] == COMPUTER_MARK
+				end
+		end
+	end
+end
+=end
+end
