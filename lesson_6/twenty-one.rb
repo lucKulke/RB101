@@ -28,6 +28,7 @@ end
 #-----------------------------------------------
 
 def at_beginning(dealer_cards,hidden_card)
+	
 	if hidden_card == true
 		return dealer_cards[0]
 	else
