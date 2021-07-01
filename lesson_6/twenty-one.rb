@@ -74,7 +74,7 @@ def determine_points_player(points,player_cards)
 
 end
 
-#-	-		-		-		-		-		-		-		-		-		-		-
+#-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - 
 
 def determine_points_dealer(points,dealer_cards,hidden_card)
 
@@ -168,7 +168,7 @@ def some_one_won?(points,round_end)
 
 end
 
-#-		-		-		-		-		-		-		-		-		-		-		
+#-  -  -  -  -  -  -  -  -  -  -  -  -  -  -	
 
 def who_won?(points,round_end)
 
