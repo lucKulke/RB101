@@ -1,6 +1,7 @@
-CARDS = [2,3,4,5,6,7,8,9,10,"J","Q","K","A"]
-VALUES = {2=> 2, 3=> 3, 4=> 4, 5=> 5, 6=> 6, 7=> 7, 8=> 8, 9=> 9, 10=> 10, "J"=> 10, "Q"=> 10, "K"=> 10, "A"=> 11}
-
+CARDS = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
+VALUES = { 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10, "J" => 10, "Q" => 10, "K" => 10, "A" => 11}
+MAX_VALUE = 21
+MIN_VALUE = 17
 
 def display_card_board(player_cards,dealer_cards,points,whose_turn_is,hidden_card)
 	system "clear"
@@ -9,11 +10,11 @@ def display_card_board(player_cards,dealer_cards,points,whose_turn_is,hidden_car
 	puts ""
 	puts "  PlayerP. |  DealerP. "
 	puts "-----------------------"
-	puts "     #{points["player"]}    |    #{points["dealer"]}"
+	puts "     #{points['player']}    |    #{points['dealer']}"
 	puts "_______________________"
 	puts ""
-	puts "Dealer: " 
-	puts "cards => #{at_beginning(dealer_cards,hidden_card)}"
+	puts "Dealer:" 
+	puts "cards => #{at_beginning(dealer_cards, hidden_card)}"
 	puts ""
 	puts "Player: "
 	puts "cards => #{player_cards}"
@@ -27,13 +28,14 @@ end
 
 #-----------------------------------------------
 
-def at_beginning(dealer_cards,hidden_card)
+def at_beginning(dealer_cards, hidden_card)
 	
 	if hidden_card == true
-		return dealer_cards[0]
+		dealer_cards[0]
 	else
-		return dealer_cards
+		dealer_cards
 	end
+
 end
 
 #-----------------------------------------------
@@ -41,7 +43,7 @@ end
 def intialize_deck
 	
 	deck = []
-	4.times{deck << CARDS}
+	4.times { deck << CARDS }
 	deck.flatten.shuffle
 
 end
@@ -50,8 +52,8 @@ end
 
 def give_cards(player_cards, dealer_cards, deck)
 	
-	2.times{player_cards << deck.pop}
-	2.times{dealer_cards << deck.pop}
+	2.times { player_cards << deck.pop }
+	2.times { dealer_cards << deck.pop }
 
 end
 
@@ -67,7 +69,7 @@ def determine_points_player(points,player_cards)
 	
 	player_cards.each do |card|
 		
-		if card == "A" && points["player"] > 21
+		if card == "A" && points["player"] > MAX_VALUE
 			points["player"] -= 10
 		end
 	
@@ -77,7 +79,7 @@ end
 
 #-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - 
 
-def determine_points_dealer(points,dealer_cards,hidden_card)
+def determine_points_dealer(points, dealer_cards, hidden_card)
 
 	points["dealer"] = 0
 
@@ -105,7 +107,7 @@ end
 
 #-----------------------------------------------
 
-def player_turn(player_cards,deck)
+def player_turn(player_cards, deck)
 
 	player_choice = ""
 
@@ -124,12 +126,12 @@ def player_turn(player_cards,deck)
 
 	if player_choice == "h"
 
-		player_cards << deck.pop
-		return false
+	  player_cards << deck.pop
+		false
 	
 	else
 
-		return true
+		true
 
 	end
 
@@ -137,24 +139,20 @@ end
 
 #---------------------------------------------
 
-def dealer_turn(dealer_cards,deck,points)
+def dealer_turn(dealer_cards, deck, points)
 
 	if points["dealer"] > 21
 	
 		return true
 	
-	elsif 
-	
-		if points["dealer"] < 17
+	elsif points["dealer"] < 17
 	
 			dealer_cards << deck.pop
 	
-		else
+	else 
 	
 			return true
 	
-		end
-
 	end
 	
 	nil
@@ -163,26 +161,37 @@ end
 
 #--------------------------------------------
 
-def some_one_won?(points,round_end)
+def some_one_won?(points, round_end, deck)
 
-	!!who_won?(points,round_end)
+	!!who_won?(points, round_end, deck)
 
 end
 
 #-  -  -  -  -  -  -  -  -  -  -  -  -  -  -	
 
-def who_won?(points,round_end)
+def who_won?(points, round_end, deck)
 
-	if points["player"] > 21
+	if deck_empty?(deck)
+		return "Nobody"
+	end
+
+	if points["player"] > MAX_VALUE
 		
 		return "Dealer"
 	
-	elsif points["dealer"] > 21
+	elsif points["dealer"] > MAX_VALUE
 
 		return "Player"
 	
 	end
 
+	round_finished?(round_end, points)
+
+end
+
+#--------------------------------------------
+
+def round_finished?(round_end, points)
 
 	if round_end == true
 
@@ -196,7 +205,7 @@ def who_won?(points,round_end)
 
 		elsif points["dealer"] == points["player"]
 
-			return "No one"
+			return "Nobody"
 		
 		end
 
@@ -204,15 +213,15 @@ def who_won?(points,round_end)
 
 	nil
 
-end
+end	
 
-#--------------------------------------------
+#- - - - - - - - - - - -
 
 def new_round?
 	
 	new_round = ""
 	
-	loop do 
+	loop do
 		
 		puts "New round? (y/n)"
 		
@@ -227,25 +236,21 @@ def new_round?
 
 	if new_round == "n"
 		
-		return true
-	
-	else
-		
-		nil
+		true
 	
 	end
+		
+	nil
 
 end
 
 #--------------------------------------------
 
-def mix_deck?(deck)
+def mix_deck?
 
 	new_round = ""
-
-	puts "The deck is out of cards" if deck_empty?(deck)
 		
-	loop do 
+	loop do
 		
 		puts "Mix the deck or quit the game? (m/q)"
 		
@@ -260,13 +265,11 @@ def mix_deck?(deck)
 
 	if new_round == "q"
 	
-		return true
-	
-	else
-	
-		nil
+		true
 	
 	end
+	
+	nil
 
 end
 
@@ -274,12 +277,10 @@ end
 
 def deck_empty?(deck)
 	
-	if deck.size < 4
-		true
-	else
-		nil
+	if deck.size < 5
+	  return true
 	end
-
+	nil
 end
 
 #--------------------------------------------
@@ -295,64 +296,73 @@ loop do
 	deck = intialize_deck
 	
 	loop do
+		
 		player_cards = []
 		dealer_cards = []
-		points = {"player" => 0, "dealer" => 0}	
+		points = { "player" => 0, "dealer" => 0 }
 
 		hidden_card = true
 		round_end = false
 
-		give_cards(player_cards,dealer_cards,deck)
+		give_cards(player_cards, dealer_cards, deck)
 		
-		determine_points_player(points,player_cards)
-		determine_points_dealer(points,dealer_cards,hidden_card)
+		determine_points_player(points, player_cards)
+		determine_points_dealer(points, dealer_cards, hidden_card)
 
 
-		loop do 
+		loop do
 			
-			display_card_board(player_cards,dealer_cards,points,"Player",hidden_card)
+			display_card_board(player_cards, dealer_cards, points, "Player", hidden_card)
 			
-			stay = player_turn(player_cards,deck)
+			stay = player_turn(player_cards, deck)
 			
-			determine_points_player(points,player_cards)
+			determine_points_player(points, player_cards)
 			
-			break if stay || some_one_won?(points,round_end)
+			break if stay || some_one_won?(points, round_end, deck) || deck_empty?(deck)
 		
 		end
 
 		hidden_card = false
 
-		loop do 
+		loop do
 			
-			determine_points_dealer(points,dealer_cards,hidden_card)
+			determine_points_dealer(points, dealer_cards, hidden_card)
 			
-			display_card_board(player_cards,dealer_cards,points,"Dealer",hidden_card)
+			display_card_board(player_cards, dealer_cards, points, "Dealer", hidden_card)
 			
-			break if some_one_won?(points,round_end)
+			break if some_one_won?(points, round_end, deck)
 			
 			sleep(2)
 		
-			stay = dealer_turn(dealer_cards,deck,points)
+			stay = dealer_turn(dealer_cards, deck, points)
 			
-			determine_points_dealer(points,dealer_cards,hidden_card)
+			determine_points_dealer(points, dealer_cards, hidden_card)
 			
-			display_card_board(player_cards,dealer_cards,points,"Dealer",hidden_card)
+			display_card_board(player_cards, dealer_cards, points, "Dealer", hidden_card)
 
-			break if stay || some_one_won?(points,round_end)
+			break if stay || some_one_won?(points, round_end, deck) || deck_empty?(deck)
 		
 		end
 		
+		if deck_empty?(deck)
+			sleep(1)
+			puts "Sorry... deck is now empty :("
+			sleep(2)
+		end
+
 		round_end = true
 
-		puts "#{who_won?(points,round_end)} won this round!!!"
+		puts "#{who_won?(points, round_end, deck)} won this round!!!"
 
+		break if deck_empty?(deck)
+		
 		new_round = new_round?
 
-		break if new_round || deck_empty?(deck)
+		break if new_round
 		
 	end
 
-	mix_deck = mix_deck?(deck)
+	mix_deck = mix_deck?
 
 break if mix_deck 
 
