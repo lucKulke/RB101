@@ -127,7 +127,7 @@ def player_turn(player_cards, deck)
 
 	if player_choice == "h"
 
-	  player_cards << deck.pop
+		player_cards << deck.pop
 		false
 	
 	else
@@ -284,7 +284,7 @@ end
 def deck_empty?(deck)
 	
 	if deck.size < 5
-	  return true
+		return true
 	end
 	nil
 end
