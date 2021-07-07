@@ -3,10 +3,11 @@ VALUES = { 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 =>
 MAX_VALUE = 21
 MIN_VALUE = 17
 
-def display_card_board(player_cards,dealer_cards,points,whose_turn_is,hidden_card)
+def display_card_board(player_cards,dealer_cards,points,whose_turn_is,hidden_card,deck)
 	system "clear"
-
 	puts "______Twenty-One_______"
+	puts ""
+	puts "Deck size = #{deck.size}"
 	puts ""
 	puts "  PlayerP. |  DealerP. "
 	puts "-----------------------"
@@ -223,20 +224,25 @@ def new_round?
 	
 	loop do
 		
-		puts "New round? (y/n)"
+		puts "Continue? (enter)"
 		
-		user_input = gets.chomp.downcase
-		new_round = user_input.split("").first
+		new_round = gets
 		
-		break if new_round == "y" || new_round == "n"
 		
-		puts "not valid input"
+		break if new_round == "\n" 
+		
+		puts "Do you want to leave the round? (y/n)"
+
+		new_round = gets.chomp.downcase.split("").first
+		
+		break if new_round == "y"
+
 	
 	end
 
-	if new_round == "n"
+	if new_round == "y"
 		
-		true
+		return true
 	
 	end
 		
@@ -251,7 +257,7 @@ def mix_deck?
 	new_round = ""
 		
 	loop do
-		
+		system "clear"
 		puts "Mix the deck or quit the game? (m/q)"
 		
 		user_input = gets.chomp.downcase
@@ -265,7 +271,7 @@ def mix_deck?
 
 	if new_round == "q"
 	
-		true
+		return true
 	
 	end
 	
@@ -312,7 +318,7 @@ loop do
 
 		loop do
 			
-			display_card_board(player_cards, dealer_cards, points, "Player", hidden_card)
+			display_card_board(player_cards, dealer_cards, points, "Player", hidden_card, deck)
 			
 			stay = player_turn(player_cards, deck)
 			
@@ -328,7 +334,7 @@ loop do
 			
 			determine_points_dealer(points, dealer_cards, hidden_card)
 			
-			display_card_board(player_cards, dealer_cards, points, "Dealer", hidden_card)
+			display_card_board(player_cards, dealer_cards, points, "Dealer", hidden_card, deck)
 			
 			break if some_one_won?(points, round_end, deck)
 			
@@ -338,7 +344,7 @@ loop do
 			
 			determine_points_dealer(points, dealer_cards, hidden_card)
 			
-			display_card_board(player_cards, dealer_cards, points, "Dealer", hidden_card)
+			display_card_board(player_cards, dealer_cards, points, "Dealer", hidden_card, deck)
 
 			break if stay || some_one_won?(points, round_end, deck) || deck_empty?(deck)
 		
