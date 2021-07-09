@@ -1,5 +1,7 @@
+SUIT = ["\u2663", "\u2666", "\u2665", "\u2660"]
 CARDS = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]
 VALUES = { 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10, "J" => 10, "Q" => 10, "K" => 10, "A" => 11 }
+SPECIAL_CARD = "A"
 MAX_VALUE = 21
 MIN_VALUE = 17
 
@@ -34,10 +36,8 @@ def at_beginning(dealer_cards, hidden_card)
   end
 end
 
-def intialize_deck
-  deck = []
-  4.times { deck << CARDS }
-  deck.flatten.shuffle
+def initialize_deck
+  SUIT.product(CARDS).shuffle
 end
 
 def give_cards(player_cards, dealer_cards, deck)
@@ -48,10 +48,10 @@ end
 def determine_points_player(points, player_cards)
   points["player"] = 0
   player_cards.each do |card|
-    points["player"] +=	VALUES[card]
+    points["player"] +=	VALUES[card.last]
   end
   player_cards.each do |card|
-    if card == "A" && points["player"] > MAX_VALUE
+    if card.last == SPECIAL_CARD && points["player"] > MAX_VALUE
       points["player"] -= 10
     end
   end
@@ -60,13 +60,13 @@ end
 def determine_points_dealer(points, dealer_cards, hidden_card)
   points["dealer"] = 0
   if hidden_card == true
-    points["dealer"] += VALUES[dealer_cards[0]]
+    points["dealer"] += VALUES[dealer_cards[0].last]
   else
     dealer_cards.each do |card|
-      points["dealer"] +=	VALUES[card]
+      points["dealer"] +=	VALUES[card.last]
     end
     dealer_cards.each do |card|
-      if card == "A" && points["dealer"] > 21
+      if card.last == SPECIAL_CARD && points["dealer"] > MAX_VALUE
         points["dealer"] -= 10
       end
     end
@@ -91,9 +91,9 @@ def player_turn(player_cards, deck)
 end
 
 def dealer_turn(dealer_cards, deck, points)
-  if points["dealer"] > 21
+  if points["dealer"] > MAX_VALUE
     return true
-  elsif points["dealer"] < 17
+  elsif points["dealer"] < MIN_VALUE
     dealer_cards << deck.pop
   else
     return true
@@ -182,7 +182,7 @@ puts "Welcome to twenty-one !"
 sleep(2)
 
 loop do
-  deck = intialize_deck
+  deck = initialize_deck
 
   loop do
     player_cards = []
@@ -229,7 +229,7 @@ loop do
 
     if deck_empty?(deck)
       sleep(1)
-      puts "Sorry... deck is now empty :("
+      puts "Sorry... The deck has too few cards to continue playing :("
       sleep(2)
     end
 
